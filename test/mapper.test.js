@@ -80,7 +80,7 @@ describe('map-routes', () => {
 
     var result = Mapper(route)[0]
     expect(result.pin).to.be.equal('ns:api,handle:*')
-    expect(result.pattern).to.be.equal('ns:api,handle:ping')
+    expect(result.pattern).to.be.equal('handle:ping,ns:api')
     expect(result.path).to.be.equal('/ping')
 
     done()
