@@ -34,6 +34,7 @@ module.exports = function web (options) {
   }
 
   seneca.add('role:web,routes:*', mapRoutes)
+  seneca.add('role:web,use:*', mapRoutes)
   seneca.add('role:web,set:server', setServer)
   seneca.add('init:web', init)
 
@@ -60,7 +61,7 @@ function mapRoutes (msg, done) {
   var adapter = msg.adapter || locals.adapter
   var context = msg.context || locals.context
   var options = msg.options || locals.options
-  var routes = Mapper(msg.routes)
+  var routes = Mapper(msg.routes, seneca)
   var auth = msg.auth || locals.auth
 
   // Call the adaptor with the mapped routes, context to apply them to
