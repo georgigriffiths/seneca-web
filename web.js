@@ -36,6 +36,9 @@ module.exports = function web (options) {
   seneca.add('role:web,routes:*', mapRoutes)
   seneca.add('role:web,use:*', mapRoutes)
   seneca.add('role:web,set:server', setServer)
+  seneca.add('role:web,get:server', function (msg, done) {
+    done(null, {server: locals.context})
+  })
   seneca.add('init:web', init)
 
   // exported functions, they can be called
@@ -61,7 +64,7 @@ function mapRoutes (msg, done) {
   var adapter = msg.adapter || locals.adapter
   var context = msg.context || locals.context
   var options = msg.options || locals.options
-  var routes = Mapper(msg.routes, seneca)
+  var routes = Mapper(msg.routes || msg.use, seneca)
   var auth = msg.auth || locals.auth
 
   // Call the adaptor with the mapped routes, context to apply them to
@@ -105,6 +108,7 @@ function setServer (msg, done) {
     done(null, {ok: true})
   }
 }
+
 
 // This is called as soon as the plugin is loaded (when it
 // returns). Any routes or customisations passed via options
